@@ -1,0 +1,82 @@
+[
+  {
+    "question": "What is HPV?",
+    "answer": "Human Papillomavirus (HPV) is the most common sexually transmitted infection in the United States. It is a group of more than 200 related viruses, some of which are spread through vaginal, anal, or oral sex. Most HPV infections clear on their own without treatment, but certain high-risk types can lead to cancers, including cervical, oropharyngeal, anal, penile, vaginal, and vulvar cancers."
+  },
+  {
+    "question": "How is HPV transmitted?",
+    "answer": "HPV is primarily spread through direct skin-to-skin contact during sexual activity, including vaginal, anal, and oral sex. It can be transmitted even when an infected person has no visible signs or symptoms. Less commonly, HPV can be transmitted from a mother to her baby during childbirth, or through contact with contaminated surfaces, though sexual contact remains the predominant route."
+  },
+  {
+    "question": "What are the symptoms of HPV infection?",
+    "answer": "Most people with HPV have no symptoms and never know they are infected. When symptoms do occur, they depend on the HPV type: low-risk types can cause genital warts (soft, flesh-colored bumps in or around the genitals, anus, or throat), while high-risk types typically cause no symptoms until they have progressed to precancer or cancer. This is why routine screening is critical."
+  },
+  {
+    "question": "Who should get the HPV vaccine?",
+    "answer": "The CDC recommends HPV vaccination for all preteens at ages 11–12 (can start at age 9), and for everyone through age 26 who was not adequately vaccinated earlier. For adults aged 27–45, vaccination decisions should be made in consultation with a healthcare provider, as the benefit is lower for those who may have already been exposed. The vaccine is most effective when given before sexual debut."
+  },
+  {
+    "question": "How many doses of the HPV vaccine are needed?",
+    "answer": "The number of doses depends on the age at first vaccination. Children who start the vaccine series before age 15 need only 2 doses, given 6–12 months apart. People who start the series at age 15 or older, or those who are immunocompromised, need 3 doses given over 6 months (at 0, 1–2, and 6 months). Completing the full series is important for maximum protection."
+  },
+  {
+    "question": "Can HPV cause cancer in men?",
+    "answer": "Yes. HPV can cause several cancers in men, including penile cancer, anal cancer, and oropharyngeal cancer (cancers of the throat, base of the tongue, and tonsils). Anal cancer and oropharyngeal cancer are particularly associated with high-risk HPV types, especially HPV 16. Men who have sex with men are at higher risk for anal HPV and anal cancer. The HPV vaccine protects against these cancers in men as well."
+  },
+  {
+    "question": "What is the difference between high-risk and low-risk HPV types?",
+    "answer": "HPV types are classified based on their cancer-causing potential. Low-risk types, such as HPV 6 and 11, cause genital warts and other benign conditions but rarely lead to cancer. High-risk (oncogenic) types, such as HPV 16 and 18, can integrate into host cell DNA and, if not cleared by the immune system, may cause persistent infections that progress to precancerous changes and invasive cancers. Together, HPV 16 and 18 account for about 70% of all cervical cancers."
+  },
+  {
+    "question": "How does cervical cancer screening work?",
+    "answer": "Cervical cancer screening involves two main tests used alone or together. The Pap test (Pap smear) collects cells from the cervix and looks for abnormal cell changes (precancers). The HPV test checks for the presence of high-risk HPV types in cervical cells. Current guidelines recommend that women aged 21–29 have a Pap test every 3 years; women aged 30–65 should have an HPV test and Pap test (co-testing) every 5 years, or a Pap test alone every 3 years. Screening allows detection and treatment of precancers before they develop into invasive cancer."
+  },
+  {
+    "question": "Can HPV infection be cured or treated?",
+    "answer": "There is no cure or antiviral treatment for HPV infection itself. However, the body's immune system clears most HPV infections within 1–2 years without intervention. The conditions caused by HPV can be treated: genital warts can be removed with topical medications or procedures, and cervical precancers can be removed via procedures such as LEEP (loop electrosurgical excision procedure) or cryotherapy. HPV-related cancers are treated with standard cancer therapies (surgery, radiation, chemotherapy)."
+  },
+  {
+    "question": "Does using condoms protect against HPV?",
+    "answer": "Condoms reduce but do not eliminate the risk of HPV transmission. Because HPV spreads through skin-to-skin contact, areas not covered by a condom can still transmit the virus. Consistent and correct condom use has been shown to reduce the risk of HPV and associated diseases, but the protection is incomplete compared to vaccines. The HPV vaccine combined with consistent condom use provides the best available protection."
+  },
+  {
+    "question": "Can HPV go away on its own?",
+    "answer": "Yes, most HPV infections are cleared by the immune system without treatment, typically within 1–2 years. Studies show that about 90% of HPV infections resolve on their own within 2 years. However, some infections persist, especially those with high-risk types in people with weaker immune systems. A persistent high-risk HPV infection is the primary risk factor for developing cervical and other HPV-related cancers, which is why follow-up after a positive HPV test is important."
+  },
+  {
+    "question": "What is the Gardasil 9 vaccine and what does it protect against?",
+    "answer": "Gardasil 9 is the HPV vaccine currently used in the United States. It protects against 9 HPV types: types 6 and 11 (which cause about 90% of genital warts) and types 16, 18, 31, 33, 45, 52, and 58 (high-risk types responsible for approximately 90% of HPV-caused cancers). The vaccine prevents infection with these HPV types; it does not treat existing infections. It has an excellent safety profile and has been shown to dramatically reduce cervical precancers in vaccinated populations."
+  },
+  {
+    "question": "What happens if my Pap smear or HPV test is abnormal?",
+    "answer": "An abnormal result does not mean you have cancer. It means that follow-up testing or monitoring is needed. Depending on the findings, your provider may recommend a repeat test in 1–3 years, colposcopy (a close examination of the cervix with a lighted instrument), or a biopsy to check for precancerous cells. Most abnormal Pap results reflect mild cell changes that resolve on their own or are treated easily at the precancerous stage. Your provider will guide you on the appropriate next steps based on your specific results."
+  },
+  {
+    "question": "Are there any groups at higher risk for persistent HPV infection or HPV-related cancers?",
+    "answer": "Yes. People who are immunocompromised—including those with HIV infection, organ transplant recipients, or individuals on immunosuppressive medications—are at significantly higher risk of persistent HPV infection and progression to cancer. Women with HIV have a substantially higher risk of cervical cancer and are recommended to have more frequent screening. Other risk factors include smoking (which impairs local immune responses in the cervix), having many sexual partners, and a history of other sexually transmitted infections."
+  },
+  {
+    "question": "Can a person get HPV even if they have only had one sexual partner?",
+    "answer": "Yes. A person can contract HPV even if they have had only one sexual partner, provided that partner carries the virus. Because many people with HPV have no symptoms and do not know they are infected, HPV can be unknowingly passed between partners. Additionally, the virus can remain latent for years, so it is not always possible to determine exactly when or from whom an infection was acquired."
+  },
+  {
+    "question": "Is HPV testing available for men?",
+    "answer": "There is currently no FDA-approved HPV test for detecting HPV in men. Routine HPV testing in men is not recommended because there is no established effective intervention or follow-up protocol for a positive test in men outside of clinical research settings. However, men who have sex with men and people who are HIV-positive may benefit from anal Pap testing to screen for anal precancers, a practice sometimes performed in specialized clinics. The best protection for men remains the HPV vaccine."
+  },
+  {
+    "question": "What are genital warts and how are they treated?",
+    "answer": "Genital warts are soft, flesh-colored growths caused by low-risk HPV types 6 and 11. They can appear on the genitals, anus, or groin and vary in size—some are flat, others have a cauliflower-like texture. They are not dangerous but can be uncomfortable or cause emotional distress. Treatment options include topical patient-applied medications (imiquimod, podofilox, sinecatechins) or provider-administered treatments such as trichloroacetic acid, cryotherapy, or surgical removal. Warts may recur even after treatment because the virus can remain in surrounding skin."
+  },
+  {
+    "question": "Can HPV be transmitted through oral sex?",
+    "answer": "Yes. HPV can be transmitted through oral sex, and this is the primary route for oropharyngeal HPV infections. High-risk HPV type 16 is responsible for the majority of HPV-associated oropharyngeal cancers (cancers of the back of the throat, base of the tongue, and tonsils). The incidence of HPV-positive oropharyngeal cancer has been rising, particularly in men. The HPV vaccine protects against HPV 16 and can reduce the risk of oropharyngeal HPV infection."
+  },
+  {
+    "question": "How long after HPV exposure might it take for cervical cancer to develop?",
+    "answer": "Cervical cancer develops slowly. After initial HPV infection, it typically takes 10–20 years for a persistent high-risk HPV infection to progress through precancerous stages to invasive cancer, though this can occur faster in immunocompromised individuals. This long natural history is why regular cervical cancer screening is so effective—it allows healthcare providers to detect and treat precancerous changes long before they become cancer."
+  },
+  {
+    "question": "Should I tell my partner if I have HPV?",
+    "answer": "While there is no legal requirement to disclose an HPV diagnosis to a partner, open communication about sexual health is generally encouraged. Because HPV is extremely common and often asymptomatic, many partners will already have been exposed. Discussing STI status can help both partners make informed decisions about vaccination, screening, and safer sex practices. If you have been diagnosed with genital warts or a high-risk HPV type, a frank conversation with current and recent partners about testing and HPV vaccination is advisable."
+  }
+]

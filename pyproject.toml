@@ -1,0 +1,43 @@
+[project]
+name = "synth-hpv-dataset"
+version = "0.1.0"
+description = "Synthetic HPV QA dataset generation using seed-guided LLM sampling"
+requires-python = ">=3.13"
+dependencies = [
+    # PyTorch — CUDA index is used on Linux (see [tool.uv.sources] below);
+    # on macOS, uv falls back to PyPI which ships MPS-enabled wheels.
+    "torch>=2.5.0",
+
+    # HuggingFace stack — used on all platforms (MPS path uses these directly)
+    "transformers>=4.46.0",
+    "accelerate>=1.0.0",
+    "sentencepiece>=0.2.0",
+    "protobuf>=5.0.0",
+
+    # CUDA-only: unsloth and bitsandbytes require triton / CUDA and do not
+    # build on macOS. They are installed only on Linux.
+    "unsloth>=2024.12.0; sys_platform == 'linux'",
+    "bitsandbytes>=0.44.0; sys_platform == 'linux'",
+]
+
+[tool.uv]
+# Script project — not an installable package.
+package = false
+
+# On Linux, fetch torch from the PyTorch CUDA wheel index so we get the
+# CUDA-enabled binary. On macOS, uv uses the default PyPI index, which
+# provides the MPS-enabled build automatically.
+#
+# To change CUDA version, update the URL suffix:
+#   CUDA 12.1 → https://download.pytorch.org/whl/cu121
+#   CUDA 12.4 → https://download.pytorch.org/whl/cu124  ← default
+#   CPU only  → https://download.pytorch.org/whl/cpu
+[tool.uv.sources]
+torch = [
+    { index = "pytorch-cuda", marker = "sys_platform == 'linux'" },
+]
+
+[[tool.uv.index]]
+name = "pytorch-cuda"
+url = "https://download.pytorch.org/whl/cu124"
+explicit = true
