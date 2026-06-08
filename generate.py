@@ -1,15 +1,23 @@
 """
 generate.py — seed-guided synthetic HPV QA dataset generation
 
-Backends (selected automatically by available hardware):
-  CUDA  → Unsloth + Qwen3-4B-bnb-4bit  (4-bit quantized, fastest)
-  MPS   → transformers + Qwen3-4B       (float16, Apple Silicon)
-  CPU   → transformers + Qwen3-4B       (float32, slow — for testing only)
+Default model: google/gemma-2-2b-it — the same model the sae_steering/ subproject
+uses, so topic vectors and steering operating points apply to this generator
+directly. Pass --model to use any other HF causal LM; Unsloth 4-bit Qwen models
+still use the fast path on CUDA.
+
+Backends (selected automatically by hardware + model):
+  CUDA + unsloth/4-bit model → Unsloth 4-bit        (fastest; Qwen path)
+  CUDA / MPS (other models)  → transformers bfloat16 (Gemma-2 safe; fp16 → NaNs)
+  CPU                        → transformers float32   (slow — testing only)
+
+Note: gemma-2-2b-it is gated. Accept the license on HuggingFace and set HF_TOKEN
+(or run `huggingface-cli login`) before first use.
 
 Usage:
     uv run generate.py
     uv run generate.py --target 200 --output data/my_dataset.json
-    uv run generate.py --model Qwen/Qwen3-4B --thinking
+    uv run generate.py --model unsloth/Qwen3-4B-bnb-4bit --thinking
 """
 
 import argparse
@@ -34,9 +42,10 @@ from utils import (
 
 # ── Default config ─────────────────────────────────────────────────────────────
 
-# The default model is the CUDA 4-bit variant. On MPS/CPU the -bnb-4bit suffix
-# is stripped automatically and the base weights are loaded instead.
-MODEL_NAME = "unsloth/Qwen3-4B-bnb-4bit"
+# Default model — Gemma-2-2B-it, matching the sae_steering/ subproject so topic
+# vectors and steering operating points apply to this generator directly.
+# (Unsloth 4-bit Qwen models still work on CUDA — pass them via --model.)
+MODEL_NAME = "google/gemma-2-2b-it"
 MAX_SEQ_LENGTH = 4096
 MAX_NEW_TOKENS = 1536
 TEMPERATURE = 0.8
@@ -97,11 +106,18 @@ def load_model_cuda(model_name: str, max_seq_length: int):
     return model, tokenizer
 
 
-def load_model_mps_cpu(model_name: str, device: str):
-    """Load via HuggingFace transformers for MPS or CPU."""
+def pick_dtype(device: str):
+    """Inference dtype. We use bfloat16 (not float16) on GPU because Gemma-2's
+    attention soft-capping overflows in float16 and yields NaNs; bfloat16 has the
+    dynamic range to stay stable and works fine for Qwen too."""
+    return torch.float32 if device == "cpu" else torch.bfloat16
+
+
+def load_model_transformers(model_name: str, device: str):
+    """Load via HuggingFace transformers (works on CUDA, MPS, or CPU)."""
     from transformers import AutoModelForCausalLM, AutoTokenizer
 
-    dtype = torch.float16 if device == "mps" else torch.float32
+    dtype = pick_dtype(device)
     print(f"Backend : transformers ({dtype})  |  device: {device}  |  model: {model_name}")
 
     tokenizer = AutoTokenizer.from_pretrained(model_name)
@@ -113,36 +129,63 @@ def load_model_mps_cpu(model_name: str, device: str):
     return model, tokenizer
 
 
+def use_unsloth(model_name: str, device: str) -> bool:
+    """Use the Unsloth 4-bit fast path only for Unsloth / 4-bit models on CUDA."""
+    return device == "cuda" and (
+        model_name.startswith("unsloth/") or model_name.endswith("-bnb-4bit")
+    )
+
+
 def load_model(model_name: str, max_seq_length: int, device: str):
     model_name = resolve_model_name(model_name, device)
-    if device == "cuda":
+    if use_unsloth(model_name, device):
         model, tokenizer = load_model_cuda(model_name, max_seq_length)
     else:
-        model, tokenizer = load_model_mps_cpu(model_name, device)
+        model, tokenizer = load_model_transformers(model_name, device)
     print("Model ready.\n")
     return model, tokenizer
 
 
 # ── Inference ──────────────────────────────────────────────────────────────────
 
+def _fold_system_into_user(messages: list[dict]) -> list[dict]:
+    """Merge any system message into the first user turn. Some chat templates
+    (e.g. Gemma) reject a 'system' role outright, so we inline it instead."""
+    system = "\n\n".join(m["content"] for m in messages if m["role"] == "system")
+    folded, inserted = [], False
+    for m in messages:
+        if m["role"] == "system":
+            continue
+        if m["role"] == "user" and not inserted and system:
+            folded.append({"role": "user", "content": f"{system}\n\n{m['content']}"})
+            inserted = True
+        else:
+            folded.append(m)
+    return folded
+
+
 def apply_chat_template(tokenizer, messages: list[dict], enable_thinking: bool) -> str:
     """
-    Apply the model's chat template. Qwen3 supports `enable_thinking`;
-    older tokenizers (Qwen2.x) do not — falls back gracefully.
+    Render messages with the model's chat template. Handles two portability gaps:
+      • `enable_thinking` is Qwen3-only (Qwen2.x / Gemma raise TypeError).
+      • a 'system' role is unsupported by some templates (Gemma raises) — we retry
+        with the system text folded into the first user turn.
     """
+    def render(msgs: list[dict]) -> str:
+        try:
+            return tokenizer.apply_chat_template(
+                msgs, tokenize=False, add_generation_prompt=True,
+                enable_thinking=enable_thinking,
+            )
+        except TypeError:
+            return tokenizer.apply_chat_template(
+                msgs, tokenize=False, add_generation_prompt=True,
+            )
+
     try:
-        return tokenizer.apply_chat_template(
-            messages,
-            tokenize=False,
-            add_generation_prompt=True,
-            enable_thinking=enable_thinking,
-        )
-    except TypeError:
-        return tokenizer.apply_chat_template(
-            messages,
-            tokenize=False,
-            add_generation_prompt=True,
-        )
+        return render(messages)
+    except Exception:
+        return render(_fold_system_into_user(messages))
 
 
 def generate_batch(
@@ -232,8 +275,9 @@ def main():
         description="Generate synthetic HPV QA pairs (CUDA / MPS / CPU)"
     )
     parser.add_argument("--model", default=MODEL_NAME,
-                        help="Model name (default: %(default)s). "
-                             "On MPS/CPU the -bnb-4bit suffix is stripped automatically.")
+                        help="HF model name (default: %(default)s). Unsloth 4-bit "
+                             "models use the fast path on CUDA; the -bnb-4bit suffix "
+                             "is stripped on MPS/CPU.")
     parser.add_argument("--seed-path", default=SEED_QA_PATH,
                         help="Path to seed QA JSON (default: %(default)s)")
     parser.add_argument("--output", default="data/generated_qa.json",
@@ -249,7 +293,7 @@ def main():
     parser.add_argument("--top-p", type=float, default=TOP_P,
                         help="Top-p nucleus sampling (default: %(default)s)")
     parser.add_argument("--thinking", action="store_true",
-                        help="Enable Qwen3 thinking mode (slower, often better quality)")
+                        help="Enable Qwen3 thinking mode (Qwen-only; ignored by Gemma)")
     parser.add_argument("--seed", type=int, default=42,
                         help="Random seed (default: %(default)s)")
     args = parser.parse_args()
